@@ -64,7 +64,13 @@ public abstract class RestDocFeature extends AbstractFeature {
      */
 	public RestDocFeature() {
 		this.restDoc = new RestDocGenerator();
+		this.customInit(this.restDoc);
 		this.restDoc.init(this.getClasses(), this.getHeader(), this.getBaseURL());
+	}
+
+	@SuppressWarnings("unused")
+	protected void customInit(final RestDocGenerator generator) {
+		// override in subclasses if needed
 	}
 
 	protected abstract String getBaseURL();
