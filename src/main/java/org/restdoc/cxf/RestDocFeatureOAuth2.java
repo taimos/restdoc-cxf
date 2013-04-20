@@ -15,12 +15,18 @@ public abstract class RestDocFeatureOAuth2 extends RestDocFeature {
 
 	@Override
 	protected GlobalHeader getHeader() {
-		final GlobalHeader gh = this.customHeader();
+		GlobalHeader gh = this.customHeader();
+		if (gh == null) {
+			gh = new GlobalHeader();
+		}
 		gh.request("Authorization", "Bearer: <oauth2 Token>", true);
 		return gh;
 	}
 
-	protected abstract GlobalHeader customHeader();
+	protected GlobalHeader customHeader() {
+		// Override if needed
+		return new GlobalHeader();
+	}
 
 	protected abstract String getTokenURL();
 
