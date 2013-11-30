@@ -4,23 +4,14 @@
 package org.restdoc.cxf;
 
 /*
- * #%L
- * restdoc-cxf
- * %%
- * Copyright (C) 2012 RestDoc.org
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * #%L restdoc-cxf %% Copyright (C) 2012 RestDoc.org %% Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
  * 
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
+ * and limitations under the License. #L%
  */
 
 import java.io.UnsupportedEncodingException;
@@ -48,17 +39,18 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public abstract class RestDocFeature extends AbstractFeature {
-
+	
 	private static final String ENCODING = "UTF-8";
-
+	
 	private static final String HTTP_METHOD = "OPTIONS";
-
+	
 	private static final String FIELD_REQUEST_URI = "org.apache.cxf.request.uri";
-
+	
 	private static final String FIELD_REQUEST_METHOD = "org.apache.cxf.request.method";
-
+	
 	private final RestDocGenerator restDoc;
-
+	
+	
 	/**
      * 
      */
@@ -67,22 +59,22 @@ public abstract class RestDocFeature extends AbstractFeature {
 		this.customInit(this.restDoc);
 		this.restDoc.init(this.getClasses(), this.getHeader(), this.getBaseURL());
 	}
-
+	
 	@SuppressWarnings("unused")
 	protected void customInit(final RestDocGenerator generator) {
 		// override in subclasses if needed
 	}
-
+	
 	protected abstract String getBaseURL();
-
+	
 	protected abstract Class<?>[] getClasses();
-
+	
 	protected abstract GlobalHeader getHeader();
-
+	
 	@Override
-	public void initialize(final Server server, final Bus bus) {
+	public final void initialize(final Server server, final Bus bus) {
 		server.getEndpoint().getInInterceptors().add(new AbstractPhaseInterceptor<Message>(Phase.READ) {
-
+			
 			@Override
 			public void handleMessage(final Message message) throws Fault {
 				final Response response = RestDocFeature.this.handleRequest(message);
@@ -92,8 +84,8 @@ public abstract class RestDocFeature extends AbstractFeature {
 			}
 		});
 	}
-
-	Response handleRequest(final Message message) {
+	
+	final Response handleRequest(final Message message) {
 		final String verb = (String) message.get(RestDocFeature.FIELD_REQUEST_METHOD);
 		if (!verb.equals(RestDocFeature.HTTP_METHOD)) {
 			// Only handle OPTIONS calls
