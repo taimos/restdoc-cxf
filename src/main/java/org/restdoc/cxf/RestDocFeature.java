@@ -16,15 +16,19 @@ package org.restdoc.cxf;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.Response;
 
 import org.apache.cxf.Bus;
+import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.interceptor.OutgoingChainInterceptor;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.message.MessageContentsList;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.restdoc.api.GlobalHeader;
@@ -34,9 +38,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author thoeger
- * 
+ *
  *         Copyright 2012, restdoc.org
- * 
+ *
  */
 public abstract class RestDocFeature extends AbstractFeature {
 	
@@ -52,8 +56,8 @@ public abstract class RestDocFeature extends AbstractFeature {
 	
 	
 	/**
-     * 
-     */
+	 *
+	 */
 	public RestDocFeature() {
 		this.restDoc = new RestDocGenerator();
 		this.customInit(this.restDoc);
@@ -79,7 +83,8 @@ public abstract class RestDocFeature extends AbstractFeature {
 			public void handleMessage(final Message message) throws Fault {
 				final Response response = RestDocFeature.this.handleRequest(message);
 				if (response != null) {
-					message.getExchange().put(Response.class, response);
+					RestDocFeature.this.createOutMessage(message, response);
+					message.getInterceptorChain().doInterceptStartingAt(message, OutgoingChainInterceptor.class.getName());
 				}
 			}
 		});
@@ -106,5 +111,15 @@ public abstract class RestDocFeature extends AbstractFeature {
 			LoggerFactory.getLogger(this.getClass()).warn("RestDoc exception: " + e.getMessage(), e);
 		}
 		throw new InternalServerErrorException();
+	}
+	
+	private Message createOutMessage(Message inMessage, Response r) {
+		Endpoint e = inMessage.getExchange().get(Endpoint.class);
+		Message mout = e.getBinding().createMessage();
+		mout.setContent(List.class, new MessageContentsList(r));
+		mout.setExchange(inMessage.getExchange());
+		mout.setInterceptorChain(OutgoingChainInterceptor.getOutInterceptorChain(inMessage.getExchange()));
+		inMessage.getExchange().setOutMessage(mout);
+		return mout;
 	}
 }
