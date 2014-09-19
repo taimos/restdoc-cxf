@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.restdoc</groupId>
 	<artifactId>restdoc-cxf</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.8-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>restdoc-cxf</name>
@@ -45,12 +45,12 @@
 		<dependency>
 			<groupId>org.restdoc</groupId>
 			<artifactId>restdoc-server-impl</artifactId>
-			<version>1.7.2</version>
+			<version>1.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-core</artifactId>
-			<version>3.0.0</version>
+			<version>3.0.1</version>
 		</dependency>
 
 		<dependency>
