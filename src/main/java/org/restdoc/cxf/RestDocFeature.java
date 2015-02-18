@@ -33,6 +33,8 @@ import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.restdoc.api.GlobalHeader;
 import org.restdoc.api.RestDoc;
+import org.restdoc.cxf.provider.IClassesProvider;
+import org.restdoc.cxf.provider.IGlobalHeaderProvider;
 import org.restdoc.server.impl.RestDocGenerator;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *         Copyright 2012, restdoc.org
  *
  */
-public abstract class RestDocFeature extends AbstractFeature {
+public class RestDocFeature extends AbstractFeature {
 	
 	private static final String ENCODING = "UTF-8";
 	
@@ -52,16 +54,32 @@ public abstract class RestDocFeature extends AbstractFeature {
 	
 	private static final String FIELD_REQUEST_METHOD = "org.apache.cxf.request.method";
 	
-	private final RestDocGenerator restDoc;
+	private final RestDocGenerator restDoc = new RestDocGenerator();
+	
+	private IGlobalHeaderProvider globalHeaderProvider;
+	
+	private IClassesProvider classesProvider;
+	
+	private String baseURL;
 	
 	
-	/**
-	 *
-	 */
-	public RestDocFeature() {
-		this.restDoc = new RestDocGenerator();
+	public final void init() {
 		this.customInit(this.restDoc);
 		this.restDoc.init(this.getClasses(), this.getHeader(), this.getBaseURL());
+	}
+	
+	private Class<?>[] getClasses() {
+		if (this.getClassesProvider() != null) {
+			return this.getClassesProvider().getClasses();
+		}
+		return new Class<?>[0];
+	}
+	
+	private GlobalHeader getHeader() {
+		if (this.getGlobalHeaderProvider() != null) {
+			return this.getGlobalHeaderProvider().getHeader();
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("unused")
@@ -69,11 +87,29 @@ public abstract class RestDocFeature extends AbstractFeature {
 		// override in subclasses if needed
 	}
 	
-	protected abstract String getBaseURL();
+	public IClassesProvider getClassesProvider() {
+		return this.classesProvider;
+	}
 	
-	protected abstract Class<?>[] getClasses();
+	public void setClassesProvider(IClassesProvider classesProvider) {
+		this.classesProvider = classesProvider;
+	}
 	
-	protected abstract GlobalHeader getHeader();
+	public IGlobalHeaderProvider getGlobalHeaderProvider() {
+		return this.globalHeaderProvider;
+	}
+	
+	public void setGlobalHeaderProvider(IGlobalHeaderProvider globalHeaderProvider) {
+		this.globalHeaderProvider = globalHeaderProvider;
+	}
+	
+	public void setBaseURL(String baseURL) {
+		this.baseURL = baseURL;
+	}
+	
+	public String getBaseURL() {
+		return this.baseURL;
+	}
 	
 	@Override
 	public final void initialize(final Server server, final Bus bus) {
