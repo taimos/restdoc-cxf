@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
-		<version>7</version>
+		<version>9</version>
 	</parent>
 	<groupId>org.restdoc</groupId>
 	<artifactId>restdoc-cxf</artifactId>
@@ -26,7 +26,7 @@
 		</license>
 	</licenses>
 	<prerequisites>
-		<maven>3.0.0</maven>
+		<maven>3.3.0</maven>
 	</prerequisites>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,12 +44,12 @@
 		<dependency>
 			<groupId>org.restdoc</groupId>
 			<artifactId>restdoc-server-impl</artifactId>
-			<version>1.8</version>
+			<version>1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-core</artifactId>
-			<version>3.0.4</version>
+			<version>3.1.1</version>
 		</dependency>
 
 		<dependency>
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.10</version>
+			<version>1.7.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -105,7 +105,7 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.5.1</version>
+				<version>1.6.5</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>sonatype-nexus-staging</serverId>
