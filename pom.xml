@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>org.restdoc</groupId>
 	<artifactId>restdoc-cxf</artifactId>
-	<version>1.10-SNAPSHOT</version>
+	<version>1.10</version>
 	<packaging>jar</packaging>
 
 	<name>restdoc-cxf</name>
@@ -70,7 +70,7 @@
 		<connection>scm:git:git@github.com:taimos/restdoc-cxf.git</connection>
 		<developerConnection>scm:git:git@github.com:taimos/restdoc-cxf.git</developerConnection>
 		<url>git@github.com:hoegertn/restdoc-java-server.git</url>
-	  <tag>HEAD</tag>
+	  <tag>v1.10</tag>
   </scm>
 	<issueManagement>
 		<system>github</system>
